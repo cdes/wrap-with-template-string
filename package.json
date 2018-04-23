@@ -1,7 +1,7 @@
 {
     "name": "wrap-with-template-string",
     "displayName": "wrap-with-template-string",
-    "description": "Wrap selected text with a template string from your clipboard.",
+    "description": "Wrap selected text with a template string.",
     "version": "0.0.1",
     "publisher": "cdes",
     "engines": {
