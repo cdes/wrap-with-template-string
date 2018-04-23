@@ -13,11 +13,47 @@ function activate(context) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', function () {
+    let disposable = vscode.commands.registerCommand('extension.wrap', () => {
         // The code you place here will be executed every time your command is executed
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        let editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return; // No open text editor
+        }
+
+        var inputBoxOptions = {
+            placeHolder: "example: console.log($$$)",
+            prompt: "your selections will replace $$$."
+        }
+
+        vscode.window.showInputBox(inputBoxOptions).then(text => {
+
+            if (!text) {
+                vscode.window.showErrorMessage("No template supplied.");
+                return;
+            }
+
+            if (text.indexOf("$$$") != -1) {
+                let selections = editor.selections;
+
+
+                editor.edit(builder => {
+                    for (const selection of selections) {
+                        const originalText = editor.document.getText(selection);
+                        const replacedText = text.replace('$$$', originalText);
+                        builder.replace(selection, replacedText);
+                    }
+
+                    // Display a message box to the user
+                    vscode.window.showInformationMessage('Wrapped: ' + selections.length + 1);
+                });
+            }
+            else
+            {
+                vscode.window.showErrorMessage("You must include $$$ in your template.");
+            }
+        });
+
     });
 
     context.subscriptions.push(disposable);
