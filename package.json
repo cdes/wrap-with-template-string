@@ -4,6 +4,7 @@
     "description": "Wrap selected text with a template string.",
     "version": "0.0.1",
     "publisher": "cdes",
+    "repository": "https://github.com/cdes/wrap-with-template-string",
     "engines": {
         "vscode": "^1.22.0"
     },
